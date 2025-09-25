@@ -1,0 +1,14 @@
+//
+// Do any local configuration here
+//
+zone "basil1614.duckdns.org" {
+	type master;
+	file "/etc/bind/basil1614.duckdns.org";
+};
+
+
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
