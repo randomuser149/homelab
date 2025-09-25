@@ -43,7 +43,7 @@ homelab/
 
 # Future plans
 1. Build a physical server
-2. Connect to the TrueNAS so it acts as the main storage pool for services like Immich and Nextcloud
+2. Connect to the TrueNAS with RAID Z1 so it acts as a redundant, main storage pool for services like Immich and Nextcloud
 3. Add OAuth for centralized identity management
 4. Add Prometheus for monitoring
 5. Migrate Plex to this server (from TrueNAS)
