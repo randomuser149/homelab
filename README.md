@@ -31,18 +31,18 @@ Security & access control: no service is exposed as the whole network is hidden 
 Certification: Caddy cannot get valid certificates from any issuer necessitating self-signed TLS certificates, reserving the (single) Tailscale generated certificate for Vaultwarden to meet Bitwardens requirements blocking self-signed certificates.
 
 # Repo Structure
-homelab/
-├── README.md                     # Project overview    
+homelab/  
+├── README.md                       
 ├── caddy/  
-│   └── Caddyfile                 # Reverse proxy config with TLS  
+│   └── Caddyfile                   
 ├── tailscale/  
-│   └── dns-setup.png             # Screenshot of split DNS config in Tailscale admin panel  
+│   └── dns-setup.png              
 ├── docker-compose/  
-│   └── compose.yml               # Compose file handling Nextcloud, Vaultwarden, Immich, Caddy  
+│   └── compose.yml  
 ├── bind9/  
-│   ├── basil1614.duckdns.org     # Zone file for internal DNS resolution  
-│   ├── named.conf.local          # Bind9 zone declarations  
-│   └── named.conf.options        # Bind9 global options  
+│   ├── basil1614.duckdns.org      
+│   ├── named.conf.local            
+│   └── named.conf.options          
 
 # Future plans
 1. Build a physical server
