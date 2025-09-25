@@ -1,0 +1,38 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# Unless the file starts with a global options block, the first
+# uncommented line is always the address of your site.
+
+# Nextcloud master domain
+nc.basil1614.duckdns.org {
+	tls internal
+
+  # Nextcloud AIO
+	reverse_proxy nextcloud-aio-apache:11000
+
+  # Nextcloud to Collabora
+	reverse_proxy /cool/* nextcloud-aio-collabora:9980 {
+		transport http {
+			versions 1.1
+		}
+	}
+  # Collabora to Nextcloud
+	reverse_proxy /apps/richdocumentscode/proxy.php* nextcloud-aio-apache:11000 {
+		transport http {
+			versions 1.1
+		}
+	}
+}
+
+# Immich
+photos.basil1614.duckdns.org {
+	tls internal
+	reverse_proxy immich_server:2283
+}
+
+# Vaultwarden
+homelab.boa-sailfin.ts.net {
+	reverse_proxy vaultwarden:80
+  # Using certificates from "tailscale cert" command because Bitwarden rejects self signed certificates
+	tls /etc/caddy/certs/homelab.boa-sailfin.ts.net.crt /etc/caddy/certs/homelab.boa-sailfin.ts.net.key
+}
