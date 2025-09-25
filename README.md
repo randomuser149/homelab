@@ -19,7 +19,7 @@ Immich         |  Photo backup designed to be  Google Photos replacement
 Caddy          |  Reverse proxy and TLS certification handling
 
 # Access services via:
-nc.basil1614.duckdns.org → Nextcloud
+nc.basil1614.duckdns.org → Nextcloud  
 photos.basil1614.duckdns.org → Immich
 homelab.boa-sailfin.ts.net → Vaultwarden
 
