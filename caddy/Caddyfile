@@ -1,7 +1,6 @@
-# The Caddyfile is an easy way to configure your Caddy web server.
 #
-# Unless the file starts with a global options block, the first
-# uncommented line is always the address of your site.
+# /docker-compose/Caddyfile
+#
 
 # Nextcloud master domain
 nc.basil1614.duckdns.org {
