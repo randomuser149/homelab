@@ -1,6 +1,6 @@
 # Homelab Configuration Overview
 This self-hosted stack is built for privacy, modularity, and remote access, powered by Docker Compose and Tailscale with Caddy handling reverse proxies where necessary.  
-Currently running in a VMware VM with plans of migrating to physical hardware after acquiring adequate parts. Having Docker compose as a centralized "hub" to launch all services (except bind9) will make future deployment faster and more reliable.
+Currently running in a VMware VM with plans of migrating to physical hardware after acquiring adequate parts (only a motherboard is needed as of now). Having Docker compose as a centralized "hub" to launch all services (except bind9) will make future deployment faster and more reliable.
 
 # The "but why deal with this" question?
 1. Privacy: online services increasingly turn into subscriptions collecting vast amounts of unnecessary data while legally shielding themselves with egregious TOSs.  
@@ -43,7 +43,8 @@ homelab/
 
 # Future plans
 1. Build a physical server
-2. Connect to the TrueNAS with RAID Z1 so it acts as a redundant, main storage pool for services like Immich and Nextcloud
-3. Add OAuth for centralized identity management
-4. Add Prometheus for monitoring
-5. Migrate Plex to this server (from TrueNAS)
+2. Add a Pi device (or similar) as the only always-on machine running Vaultwarden & Caddy (these are continuous needs while the rest are unpredictable, high intensity loads), keeping the "big" server and NAS in sleep unless woken up for access of services.
+3. Connect to the TrueNAS with RAID Z1 so it acts as a redundant, main storage pool for services like Immich and Nextcloud
+4. Add OAuth for centralized identity management
+5. Add Prometheus for monitoring
+6. Migrate Plex to this server (from TrueNAS)
