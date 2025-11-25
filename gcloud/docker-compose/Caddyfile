@@ -1,0 +1,7 @@
+# /docker-compose/Caddyfile
+
+# Vaultwarden
+[domain] {
+        reverse_proxy vaultwarden:80
+        tls [email]
+}
