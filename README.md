@@ -2,11 +2,22 @@
 This self-hosted stack is built for privacy, modularity, and remote access, powered by Docker Compose and Tailscale with Caddy handling reverse proxies where necessary.  
 It is planned to be a hybrid setup running on my own hardware as well as in a cloud instance.
 
+> [!NOTE]
+> The following repo structure and text may not represent the actual working state nor the developement history.
+> I started this repo as a complete git beginner not even aware of branching, so now I'm slowly cleaning it up and restructuring.
+> I'll try my best to make it reflect the actual state as soon as possible.
+
 # The "but why deal with this" question?
 1. Privacy: online services increasingly turn into subscriptions collecting vast amounts of unnecessary data while legally shielding themselves with egregious TOSs.  
 2. Control: self-hosting gives full control of the service chain from server to end device allowing configuration based on precise needs and usecases.  
 3. Growth & knowledge: as an aspiring network engineer / cloud engineer / cloud architect applying my knowledge in ways giving useful, every day results further my carreer as well as my quality of life.
 
+# Branches
+This repository contains multiple deployment variants and experiments:  
+- **main** – current setup in use
+- **cloudflared** – Cloudflare Tunnel version
+- **cloud** – Google Cloud deployment
+ 
 # Cloud?
 Yes, cloud. as for the why it comes down to costs. Keeping a big server always on eats a lot of electricity. So currently (until i acquire a Pi or low power device) a cloud instance handles always on services (Vaultwarden, Caddy) for a much much lower cost (currently for free, but while Google says e2-micro is always free I have doubts) than a Ryzen 5 2600x server would.  
 A big difference is that it does not need Tailscale for access as it has a public IP address, that my home server doesn't, and my lovely ISP blocks port forwardings so I cannot host any services without VPNs which make every day life a tiny bit harder even if they provide good security.  
