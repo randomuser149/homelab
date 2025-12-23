@@ -17,6 +17,7 @@ This repository contains multiple deployment variants and experiments:
 - **main** – current setup in use
 - **cloudflared** – Cloudflare Tunnel version
 - **cloud** – Google Cloud deployment
+- **tailscale** – Tailscale version (placeholder, will populate later)
  
 # Cloud?
 Yes, cloud. as for the why it comes down to costs. Keeping a big server always on eats a lot of electricity. So currently (until i acquire a Pi or low power device) a cloud instance handles always on services (Vaultwarden, Caddy) for a much much lower cost (currently for free, but while Google says e2-micro is always free I have doubts) than a Ryzen 5 2600x server would.  
