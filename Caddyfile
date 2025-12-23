@@ -1,0 +1,15 @@
+
+{
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+*.example.tld, vw.example.tld {
+	reverse_proxy vaultwarden:80
+}
+
+photos.example.tld {
+	reverse_proxy immich_server:2283
+}
+
+# Refer to the Caddy docs for more information:
+# https://caddyserver.com/docs/caddyfile
