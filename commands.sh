@@ -67,3 +67,4 @@ sudo ufw reload
 sudo vim /etc/ssh/sshd_config
 # Uncomment the Port 22 line, and replace 22 with your own choice.
 sudo systemctl restart sshd
+

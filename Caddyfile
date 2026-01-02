@@ -5,3 +5,9 @@
         reverse_proxy vaultwarden:80
         tls [email]
 }
+
+# Radicale
+[domain] {
+        reverse_proxy radicale:5232
+        tls [email]
+}

@@ -23,6 +23,33 @@ services:
       - caddy_data:/data
       - caddy_config:/config
 
+  radicale:
+      image: ghcr.io/kozea/radicale:3.5.10
+      container_name: radicale
+      ports:
+      - 5232:5232
+      volumes:
+        - config:/etc/radicale
+        - data:/var/lib/radicale
+
 volumes:
   caddy_data:
   caddy_config:
+
+  config:
+    name: radicale-config
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      # map dir to its location on host
+      device: /docker-compose/radicale/config
+
+  data:
+    name: radicale-data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      # map dir to its location on host
+      device: /docker-compose/radicale/data
