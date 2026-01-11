@@ -8,7 +8,7 @@ Since my lovely ISP blocks me from obtaining an SSL certificate and also blocks 
 ```
 /
 ├── README.md
-├── docker-compose.yml
+├── compose.yml
 ├── Caddyfile
 └── images/
     ├── namecheap1.png
@@ -27,6 +27,9 @@ Since my lovely ISP blocks me from obtaining an SSL certificate and also blocks 
 - a Cloudflare account
 
 ## Configuration
+>[!NOTE]
+>From now on, this guide assumes your destination directory is /compose. If you wish to place it elsewhere, feel free to change the paths.
+>Also, from my own fault I randomly put sudo in front of some commands and miss it from other places. So be ware you might need more sudo's than I wrote here.
 ### Add your domain to your Cloudflare account
 On https://dash.cloudflare.com/ navigate to Domains and either press "Buy a domain" if you don't have one and want to buy it from Cloudflare or continue with "Onboard a domain".  
 Enter your apex domain and press Continue at the bottom.  
@@ -94,28 +97,30 @@ sudo dnf install -y podman-compose
 I believe that's all that is needed to be done.
 To be sure it works, run ```podman compose --version```. If it prints a version number, you're good to go.
 
-### Configure Caddy
-#### Creating a Cloudflare API token
+### Configure services
+#### Creating a Cloudflare API token for Caddy
 For this I followed the [original guide](https://github.com/CaddyBuilds/caddy-cloudflare?tab=readme-ov-file#configuration) step by step, but here's what I did:  
-Navigate to Profile > API Tokens and click Create Token:  
+Navigate to Profile > API Tokens and click Create Token:   
 ![Cloudflare Profile](images/api1.png)  
 ![Cloudflare API Tokens](images/api2.png)  
 Then click Get started and configure it the following way:  
 ![Cloudflare API Tokens](images/api3.png)  
-Then Click Continue to summary, and create it.
+Then Click Continue to summary, and create it and SAVE THE TOKEN.
 >[!WARNING]
 >NEVER share your API token with anyone.  
 >Save your API key somewhere secure, because you'll need it in the following step and you can't open it again.
   
 #### Create/update the Compose file
-You can follow the [original guide](https://github.com/CaddyBuilds/caddy-cloudflare) but here's my compose file:
+Here's the link to the [original guide](https://github.com/CaddyBuilds/caddy-cloudflare).
 >[!IMPORTANT]
->Replace the CLOUDFLARE_API_TOKEN with the token you got in the previous step.
+>Replace the CLOUDFLARE_API_TOKEN value to the token you got in the previous step.
 
+To create the file use ```vim /compose/compose.yml``` and paste in the following block which adds Caddy into:
 ```
 services:
   caddy:
     image: ghcr.io/caddybuilds/caddy-cloudflare:latest
+    container_name: caddy
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -124,12 +129,17 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-      - $PWD/Caddyfile:/etc/caddy/Caddyfile
-      - $PWD/site:/srv
-      - caddy_data:/data
-      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:Z,ro
+      - caddy_data:/data:Z
+      - caddy_config:/config:Z
     environment:
-      - CLOUDFLARE_API_TOKEN=your_cloudflare_api_token (you made this in the previous step)
+      - CLOUDFLARE_API_TOKEN=my_not_public_token
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
 
 volumes:
   caddy_data:
@@ -137,6 +147,7 @@ volumes:
 ```
 
 #### Create/update the Caddyfile
+Create it with ```vim /compose/Caddyfile```   
 I used the Global Configuration setup and it looks like this:
 ```
 {
@@ -144,46 +155,38 @@ I used the Global Configuration setup and it looks like this:
 }
 
 subdomain.example.tld {
-	reverse_proxy vaultwarden:80
+	reverse_proxy vaultwarden:1111
 }
 ```
+Afterwards, change permissions with ```chmod 400 /compose/Caddyfile```
 #### Add Vaultwarden as a service
+First of all, make the directory where you want it to store the data with ```sudo mkdir /compose/vaultwarden-data/```   
 You have to append the next section to the already created compose.yml in a way that vaultwarden is one intendation (2 spaces in my versions) inside the big "services:" block.
 ```
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
-    ports:
-      - 8081:80
+    user: "65534:65534"
     volumes:
-      - /vw-data:/data
+      - ./vaultwarden-data:/data:Z
+    environment:
+      ROCKET_PORT: 1111
+      ROCKET_ADDRESS: 0.0.0.0
     networks:
-      default-network:
+      - my-network
 ```
-#### Update SELinux contexts
->[!IMPORTANT]
->You only have to do this part if you're on a system that has SELinux. So on Debian, skip this part.  
+Since we told the container to run as non-root inside itself, we have to update the file and directory permissions on the host as well.
+```
+sudo chown -R 65534:65534 /compose/vaultwarden-data/
+sudo chmod -R 700 /compose/vaultwarden-data/
+```
+#### SELinux contexts
+>[!NOTE]
+>In the previous version of the project, I manually set the context to svirt_sandbox_file_t. It did work, but with the side effect of all containers being able to access each others files and directories.
 
-Trust me, I forgot and tried to run the containers without this part. To say the least no-one could access their directories or write files, or basically do anything. which is part of why SELinux is good.  
-  
-For Caddy, change to the directory where your Caddyfile is located then issue the following commands:
-```
-semanage fcontext -a -t svirt_sandox_file_t "$PWD/Caddyfile"
-restorecon -v "$PWD/Caddyfile"
-```
-You should see a message saying `Relabeled /path/to/Caddyfile from unconfined_u:object_r:default_t:s0 to unconfined_u:object_r:container_file_t:s0`  
-To check, you can run the `ls -Z Caddyfile` command to see if it says `unconfined_u:object_r:container_file_t:s0 Caddyfile`
-
-For Vaultwarden issue the following commands:
->[!IMPORTANT]
->Replace `/vw-data` with the path to the dir you gave Vaultwarden to use in the compose file.
-
-```
-semanage fcontext -a -t svirt_sandox_file_t "/vw-data"
-restorecon -Rv "/vw-data"
-```
-To check, you can run the `ls -dZ /vw-data` command to see if it says `unconfined_u:object_r:container_file_t:s0 /vw-data`
+You can manage SELinux contexts by simply adding a :Z at the end of each mount in the compose.yml. This creates private labels so each container only has access to its files or directories.  
+You can check with the `ls -Z {file/dir}` command to see if it works, and should see something similar to system_u:object_r:container_file_t:s0:c134,c834 {file/dir}
 #### Firewall
 >[!IMPORTANT]
 >Alma uses Firewalld by default, but on other systems (Ubuntu/Debian) you might encounter other firewalls, but you have to enable port 443 over TCP in all cases.  
@@ -202,6 +205,21 @@ To start the container use `podman compose up -d`
 I didn't run into any issues but if you do, please reference the original guide and also you can view logs with:  
 `podman logs <container-name>`
 
+### Backups
+Creating the backup:
+```
+rsync -a --no-xattrs /compose/vaultwarden-data/ /tmp/vaultwarden-data-bak && 7z a -p"password" vaultwarden-backup.7z /tmp/vaultwarden-data-bak && rm -rf /tmp/vaultwarden-data-bak
+```
+Restoring the backup:
+>[!WARNING]
+>These commands erase your old directory's data, so only use it if that is unsaveable. Or just use the extract part if you want to.
+
+```
+# Extract
+7z x vaultwarden-backup.7z -ppassword -o/compose/vaultwarden-restore
+# Replace your old directory's data
+cp -R /compose/vaultwarden-restore /compose/vaultwarden-data && rm -rf /compose/vaultwarden-restore && chown -R nobody:nobody /compose/vaultwarden-data
+```
 ## Results
 If everything went according to plan, your domain (and/or subdomains) should be reachable from just a web browser.
 Now, I can access my own Vaultwarden service just by typing in the subdomain for it.  

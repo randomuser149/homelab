@@ -12,26 +12,29 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-      - $PWD/Caddyfile:/etc/caddy/Caddyfile
-      - $PWD/site:/srv
-      - caddy_data:/data
-      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:Z
+      - caddy_data:/data:Z
+      - caddy_config:/config:Z
     environment:
       - CLOUDFLARE_API_TOKEN=my_not_public_token
     networks:
-      default-network:
+      - my-network
 
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
+    user: "65534:65534"
     volumes:
-      - /vw-data:/data
+      - ./vaultwarden-data:/data:Z
+    environment:
+      ROCKET_PORT: 1111
+      ROCKET_ADDRESS: 0.0.0.0
     networks:
-      default-network:
+      - my-network
 
 networks:
-  default-network:
+  my-network:
     driver: bridge
 
 volumes:

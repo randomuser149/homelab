@@ -4,5 +4,5 @@
 }
 
 subdomain.example.tld {
-	reverse_proxy vaultwarden:80
+	reverse_proxy vaultwarden:1111
 }
