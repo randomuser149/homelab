@@ -196,6 +196,9 @@ firewall-cdm --list-ports
 The last command should return `443/tcp`.
 
 ### Add the IoT monitoring stack
+This section adds services that make data logging possible from IoT devices.  
+It expects data published to topics `sensors/humidity`, `sensors/temperature` and `sensors/soil`.  
+The ESP32S3 configuration and setup can be found in the [esp32 branch](../esp32) of this repo
 #### Update compose.yml
 To include the necessary services, update the pre-existing `compose.yml`
 ```
@@ -335,18 +338,12 @@ Change the Query language to Flux, set the HTTP URL to http://influxdb:8086, tur
 Click Save & test. If it says `datasource is working. x buckets found`, you're good to go.  
 Finally, go to Dashboards, click New > New dashboard, then Add visualization.  
 Select the default influxdb and paste a query you'd like to be displayed.  
-For me the two I have are the realtime humidity data and a per minute average of it.
+For example here's one that shows real time humidity going back one hour.
 ```
 from(bucket: "sensors")
-  |> range(start: -5m)
-
-```
-```
-from(bucket: "sensors")
-  |> range(start: -5h)
+  |> range(start: -1h)
   |> filter(fn: (r) => r._measurement == "mqtt_consumer")
-  |> filter(fn: (r) => r._field == "value")
-  |> aggregateWindow(every: 1m, fn: mean)
+  |> filter(fn: (r) => r.topic == "sensors/humidity")
 ```
 #### Telegraf
 Create the necessary directories and the configuration file:
@@ -362,7 +359,11 @@ Now, add the next snippet into `telegraf.conf`
 
 [[inputs.mqtt_consumer]]
   servers = ["tcp://mosquitto:1883"]
-  topics = ["sensors/#"]
+  topics = [
+    "sensors/humidity",
+    "sensors/soil",
+    "sensors/temperature"
+  ]
   qos = 0
   connection_timeout = "30"
   data_format = "value"
