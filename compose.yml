@@ -1,6 +1,5 @@
 services:
 
-
   caddy:
     image: ghcr.io/caddybuilds/caddy-cloudflare:latest
     container_name: caddy
@@ -33,6 +32,59 @@ services:
     networks:
       - my-network
 
+   mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:Z
+      - ./mosquitto/data:/mosquitto/data:Z
+      - ./mosquitto/log:/mosquitto/log:Z
+    ports:
+      - "1883:1883"
+    networks:
+      - my-network
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: unless-stopped
+    volumes:
+      - ./influx_data:/var/lib/influxdb:Z
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin123
+      DOCKER_INFLUXDB_INIT_ORG: myorg
+      DOCKER_INFLUXDB_INIT_BUCKET: sensors
+      DOCKER_INFLUXDB_INIT_RETENTION: 30d
+    networks:
+      - my-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - my-network
+
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    restart: unless-stopped
+    user: root
+    init: false
+    entrypoint: ["/usr/bin/telegraf"]
+    depends_on:
+      - influxdb
+      - mosquitto
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:Z,ro
+    networks:
+      - my-network
+
 networks:
   my-network:
     driver: bridge
@@ -40,3 +92,4 @@ networks:
 volumes:
   caddy_data:
   caddy_config:
+  grafana_data:
