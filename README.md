@@ -24,7 +24,8 @@ So far, the humidity is implemented and syncs to the database I created which is
 ### Arduino IDE
 In Arduino IDE, you have to download the following libraries in library manager:  
 - Adafruit SHT4x Library by Adafruit  
-- PubSubClient by Nick O'Leary  
+- PubSubClient by Nick O'Leary
+   
 After you connect your ESP32 for the first time, it'll give you the prompt to automatically install drivers. Accept that.
 Then, paste in the following code.
 >[!IMPORTANT]
