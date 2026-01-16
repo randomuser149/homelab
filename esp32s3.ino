@@ -1,38 +1,3 @@
-# ESP 32
-So this is a microcontroller based sidequest so that I can monitor my room temperature and humidity from anywhere.  
-So far, the humidity is implemented and syncs to the database I created which is present in the cloudflared branch.
-
-## What you need
-- an ESP32 (I have an ESP32S3 with WiFi)
-- an SHT40 sensor (and extra wires depending on your model)
-- Arduino IDE installed
-- an MQTT server you can sync to
-
-## Configuration
-
-### Pin layout
->[!NOTE]
->ESP32 boards allow flexible I²C pin assignment. If your board uses different default pins, adjust I2C_SDA and I2C_SCL accordingly.  
-
-| ESP32 Pin | Sensor Pin | Description        |
-|-----------|------------|--------------------|
-| 3V3       | VDD        | Power              |
-| GND       | GND        | Ground             |
-| GPIO3     | SCL        | I²C Clock          |
-| GPIO4     | SDA        | I²C Data           |
-
-### Arduino IDE
-In Arduino IDE, you have to download the following libraries in library manager:  
-- Adafruit SHT4x Library by Adafruit  
-- PubSubClient by Nick O'Leary  
-After you connect your ESP32 for the first time, it'll give you the prompt to automatically install drivers. Accept that.
-Then, paste in the following code.
->[!IMPORTANT]
->My pin layout isn't set in stone, you can change it.  
->Replace ssid and password with your WiFi SSID and password.  
->Replace MQTT server LAN IP with your servers local IP address.  
->This code publishes to the MQTT topic `sensors/humidity` adjust it according to your needs.
-```
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <Wire.h>
@@ -161,22 +126,3 @@ void loop() {
     client.publish("sensors/humidity", msg);
   }
 }
-```
-
-Click upload and you should be good to go.  
-I have to press a button on my board for the new code to start running once it finishes uploading, this may vary.
-
-### Monitoring
-If something isn't going according to plan, you can open up the Serial Monitor in Arduino IDE and see what may cause the issue.  
-This code has some outputs for failed WiFi connection, failed MQTT connection and failed connection to the SHT40 sensor.
-
-## Expected output
-Over serial:
-```
-WiFi connecting.... -> connected, IP: 192.168.1.42
-TCP test to broker 192.168.1.10:1883 ... SUCCESS (port reachable)
-SHT40 online!
-Humidity: 47.32
-Humidity: 47.28
-```
-And live data over MQTT.
