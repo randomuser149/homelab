@@ -1,0 +1,106 @@
+- hosts: alma
+  become: yes
+  vars_files:
+    - secrets.yml
+
+  tasks:
+    # Update package metadata first of all
+    - name: update package metadata
+      dnf:
+        update_cache: yes
+
+    # Create parent dir
+    - name: create compose directory
+      file:
+        path: /compose
+        state: directory
+
+    # Get Podman Compose
+    - name: install epel-release
+      dnf:
+        name: epel-release
+        state: present
+    - name: install podman-compose
+      dnf:
+        name: podman-compose
+        state: present
+
+    # Check if cloudflared is isntalled
+    - name: check if cloudflared is already installed
+      stat:
+        path: /etc/systemd/system/cloudflared.service
+      register: cloudflared_service
+      when: env == "cloudflared"
+
+    # Install cloudflared
+    - name: add cloudflare repo
+      get_url:
+        url: https://pkg.cloudflare.com/cloudflared.repo
+        dest: /etc/yum.repos.d/cloudflared.repo
+        mode: '0644'
+      when:
+        - not cloudflared_service.stat.exists
+        - env == "cloudflared"
+    - name: update package metadata
+      dnf:
+        update_cache: yes
+      when:
+        - not cloudflared_service.stat.exists
+        - env == "cloudflared"
+    - name: install cloudflared
+      dnf: 
+        name: cloudflared
+        state: present
+      when:
+        - not cloudflared_service.stat.exists
+        - env == "cloudflared"
+    - name: install cloudflared service with token
+      command: cloudflared service install {{ cloudflare_install_token }}
+      when:
+        - not cloudflared_service.stat.exists
+        - env == "cloudflared"
+
+    # Make the compose file
+    - name: render compose file with secrets
+      template:
+        src: compose_{{ env }}.yml.j2
+        dest: /compose/compose.yml
+        mode: "0644"
+
+    # Make the Caddyfile
+    - name: render Caddyfile with domains
+      template:
+        src: Caddyfile_{{ env }}.j2
+        dest: /compose/Caddyfile
+        mode: "0644"
+
+    # MAke dirs for Vaultwarden
+    - name: create vaultwarden data directory
+      file:
+        path: /compose/vaultwarden-data
+        state: directory
+        owner: 65534
+        group: 65534
+        mode: "0700"
+
+    # Open firewall port 443
+    - name: open port 443/tcp in firewalld
+      firewalld:
+        port: 443/tcp
+        zone: public
+        permanent: yes
+        state: enabled
+        immediate: yes
+    
+    - name: reload firewalld
+      service:
+        name: firewalld
+        state: reloaded
+    
+    
+    # Compose down
+    - name: compose up -d
+      command: podman-compose up -d
+      args:
+        chdir: /compose
+

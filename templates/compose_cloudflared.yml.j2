@@ -18,18 +18,18 @@ services:
     networks:
       - my-network
 
-   vaultwarden:
-    image: vaultwarden/server:latest
-    container_name: vaultwarden
-    restart: unless-stopped
-    user: "65534:65534"
-    volumes:
-      - ./vaultwarden-data:/data:Z
-    environment:
-      ROCKET_PORT: 1111
-      ROCKET_ADDRESS: 0.0.0.0
-    networks:
-      - my-network
+  vaultwarden:
+     image: docker.io/vaultwarden/server:latest
+     container_name: vaultwarden
+     restart: unless-stopped
+     user: "65534:65534"
+     volumes:
+       - ./vaultwarden-data:/data:Z
+     environment:
+       ROCKET_PORT: 1111
+       ROCKET_ADDRESS: 0.0.0.0
+     networks:
+       - my-network
 
 networks:
   my-network:
