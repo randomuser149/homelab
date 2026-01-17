@@ -1,0 +1,7 @@
+{
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+{{ vaultwarden_domain }} {
+	reverse_proxy vaultwarden:1111
+}
