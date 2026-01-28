@@ -45,7 +45,7 @@ void ensureWiFi() {
   }
 }
 
-// ---------------- MQTT Reconnect (non-blocking) ----------------
+// ---------------- MQTT Reconnect ----------------
 void ensureMQTT() {
   if (client.connected()) return;
 
@@ -146,7 +146,7 @@ void loop() {
 
   unsigned long now = millis();
 
-// ---------------- SHT40 every 2 seconds ----------------// 3. Sensor + publish every 2 seconds
+// ---------------- SHT40 every 2 seconds ----------------
   static unsigned long lastSHT = 0;
 
   if (millis() - lastSHT > 2000) {
@@ -209,4 +209,3 @@ void loop() {
     }
   }
 }
-
