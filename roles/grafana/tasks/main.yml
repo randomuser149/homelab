@@ -1,0 +1,136 @@
+    - name: Create Grafana admin password secret
+      containers.podman.podman_secret:
+        name: grafana_password_file
+        data: "{{ grafana_pass }}"
+        state: present
+        skip_existing: true
+
+    - name: Ensure grafana_data volume exists
+      containers.podman.podman_volume:
+        name: grafana_data
+        state: present
+    
+    - name: Run Grafana container
+      containers.podman.podman_container:
+        name: grafana
+        image: "{{ grafana_image }}"
+        state: started
+        restart_policy: unless-stopped
+
+        publish:
+          - "{{ grafana_port }}:{{ grafana_port }}"
+        volumes:
+          - "grafana_data:/var/lib/grafana:Z"
+        env:
+          GF_SECURITY_ADMIN_USER: admin
+          GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_password_file
+        secrets:
+          - grafana_password_file
+          
+        network:
+          - "{{ podman_network }}"
+
+    # Grafana API tokens
+    - name: Create Grafana service account
+      uri:
+        url: "{{ grafana_url }}/api/serviceaccounts"
+        method: POST
+        user: "admin"
+        password: "{{ grafana_pass }}"
+        force_basic_auth: true
+        status_code: [200, 201, 400, 409]   # 409 = already exists
+        body_format: json
+        body:
+          name: "ansible"
+          role: "Admin"
+      delay: 3
+      retries: 10
+      register: sa_create
+
+    - name: Get service account list
+      uri:
+        url: "{{ grafana_url }}/api/serviceaccounts/search"
+        method: GET
+        user: "admin"
+        password: "{{ grafana_pass }}"
+        force_basic_auth: true
+      register: sa_list
+
+    - set_fact:
+        sa_id: >-
+          {{ sa_list.json.serviceAccounts
+             | selectattr('name','equalto','ansible')
+             | map(attribute='id')
+             | first }}
+
+    - name: List existing tokens
+      uri:
+        url: "{{ grafana_url }}/api/serviceaccounts/{{ sa_id }}/tokens"
+        method: GET
+        user: "admin"
+        password: "{{ grafana_pass }}"
+        force_basic_auth: true
+      register: sa_tokens
+
+    - name: Delete old tokens
+      uri:
+        url: "{{ grafana_url }}/api/serviceaccounts/{{ sa_id }}/tokens/{{ item.id }}"
+        method: DELETE
+        user: "admin"
+        password: "{{ grafana_pass }}"
+        force_basic_auth: true
+      loop: "{{ sa_tokens.json }}"
+
+    - name: Create Grafana API token
+      uri:
+        url: "{{ grafana_url }}/api/serviceaccounts/{{ sa_id }}/tokens"
+        method: POST
+        user: "admin"
+        password: "{{ grafana_pass }}"
+        force_basic_auth: true
+        status_code: [200, 400, 409]
+        body_format: json
+        body:
+          name: "grafana"
+          secondsToLive: 60480
+      register: sa_token
+    
+    - set_fact:
+        grafana_api_key: "{{ sa_token.json.key | default('') }}"
+
+    # Grafana config
+    - name: Add InfluxDB datasource
+      grafana.grafana.datasource:
+        grafana_url: "{{ grafana_url }}"
+        grafana_api_key: "{{ grafana_api_key }}"
+        state: present
+    
+        dataSource:
+          name: "InfluxDB"
+          type: influxdb
+          access: proxy
+          uid: "influx-main"
+          url: "http://influxdb:{{ influx_port }}"
+    
+          jsonData:
+            version: "Flux"
+            organization: "{{ influx_org }}"
+            defaultBucket: "{{ influx_init_bucket }}"
+    
+          secureJsonData:
+            token: "{{ influx_grafana_token }}"
+    
+    - name: Load dashboard JSON
+      slurp:
+        src: "{{ role_path }}/dashboards/sensors.json"
+      register: dashboard_json
+      delegate_to: localhost
+      become: false
+
+    - name: Import dashboard
+      grafana.grafana.dashboard:
+        grafana_url: "{{ grafana_url }}"
+        grafana_api_key: "{{ grafana_api_key }}"
+        state: present
+        dashboard: "{{ dashboard_json.content | b64decode | from_json }}"
+        

@@ -1,0 +1,2 @@
+grafana_image: docker.io/grafana/grafana:latest
+grafana_port: 3000

@@ -1,0 +1,28 @@
+    # Mosquitto
+    - name: Copy mosquitto.conf
+      copy:
+        src: "{{ mosquitto_conf }}"
+        dest: /{{ parent_dir }}/{{ mosquitto_conf }}
+        mode: "{{ mosquitto_file_permissions }}"
+
+    - name: Open port for Mosquitto
+      firewalld:
+        port: "{{ mosquitto_port }}/tcp"
+        permanent: yes
+        state: enabled
+        immediate: yes
+    - name: Run Mosquitto container
+      containers.podman.podman_container:
+        name: mosquitto
+        image: "{{ mosquitto_image }}"
+        state: started
+        restart_policy: unless-stopped
+
+        publish:
+          - "{{ mosquitto_port }}:{{ mosquitto_port }}"
+
+        volumes:
+          - "/{{ parent_dir }}/{{ mosquitto_conf }}:/mosquitto/config/mosquitto.conf:Z"
+
+        network:
+          - "{{ podman_network }}"

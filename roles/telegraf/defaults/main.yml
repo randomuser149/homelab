@@ -1,0 +1,4 @@
+telegraf_image: docker.io/library/telegraf:latest
+telegraf_conf: telegraf.conf
+telegraf_file_permissions: 0644
+root_topic: sensors

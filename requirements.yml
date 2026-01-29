@@ -1,0 +1,5 @@
+collections:
+  - name: containers.podman
+#    version: ""
+  - name: grafana.grafana
+    version: "6.0.6"

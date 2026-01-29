@@ -1,0 +1,35 @@
+{
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+{{ vaultwarden_domain }} {
+	reverse_proxy vaultwarden:{{ vaultwarden_port }}
+}
+
+{{ influx_domain }} {
+	reverse_proxy influxdb:{{ influx_port }}
+}
+
+{{ grafana_domain }} {
+	@public {
+		path /public-dashboards/*
+		path /api/public/dashboards/*
+		path /public/build/*
+		path /public/img/*
+	}
+	handle @public {
+		reverse_proxy grafana:{{ grafana_port }}
+	}
+	respond * 403
+}
+
+http://{{ server_ip }}, http://{{ server_tailscale_ip}} {
+	reverse_proxy grafana:{{ grafana_port }}
+}
+
+
+:{{ caddy_health_port }}, http://{{ server_ip }}:{{ caddy_health_port }}, http://{{ server_tailscale_ip}}:{{ caddy_health_port }} {
+        respond /health 200 {
+                body "OK"
+        }
+}

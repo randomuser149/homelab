@@ -1,0 +1,19 @@
+server_ip: x.x.x.x
+server_tailscale_ip: x.x.x.x
+
+parent_dir: stack
+
+vaultwarden_domain: sub.example.tld
+vaultwarden_port: 1111
+
+influx_domain: sub2.example.tld
+influx_port: 8086
+influx_org: myorg
+influx_init_bucket: sensors
+influx_retention: 30d
+
+grafana_domain: sub3.example.tld
+
+mosquitto_port: 1883
+
+podman_network: my-network

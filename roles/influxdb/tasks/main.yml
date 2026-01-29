@@ -1,0 +1,107 @@
+    - name: make influx_data dir
+      file:
+        path: /{{ parent_dir }}/{{ influx_dir }}
+        state: directory
+        owner: "{{ username }}"
+        group: "{{ group }}"
+        mode: "{{ influx_dir_permissions }}"
+
+    - name: Run InfluxDB container
+      containers.podman.podman_container:
+        name: influxdb
+        image: "{{ influx_image }}"
+        state: started
+        restart_policy: unless-stopped
+    
+        volumes:
+          - "/{{ parent_dir }}/{{ influx_dir }}:/var/lib/influxdb:Z"
+    
+        env:
+          DOCKER_INFLUXDB_INIT_MODE: "setup"
+          DOCKER_INFLUXDB_INIT_USERNAME: "{{ influx_admin_user }}"
+          DOCKER_INFLUXDB_INIT_PASSWORD: "{{ influx_admin_password }}"
+          DOCKER_INFLUXDB_INIT_ORG: "{{ influx_org }}"
+          DOCKER_INFLUXDB_INIT_BUCKET: "{{ influx_init_bucket }}"
+          DOCKER_INFLUXDB_INIT_RETENTION: "{{ influx_retention }}"
+    
+        network:
+          - "{{ podman_network }}"
+
+    # InfluxDB tokens
+    - name: Wait for InfluxDB API to be ready
+      containers.podman.podman_container_exec:
+        name: influxdb
+        command: influx ping
+      register: influx_ping
+      retries: 20
+      delay: 2
+      until: influx_ping.rc|default(1) == 0
+              
+    - name: List existing InfluxDB tokens
+      containers.podman.podman_container_exec:
+        name: influxdb
+        command: influx auth list --json
+      register: influx_auth_list
+      changed_when: false
+
+    - name: Determine if Telegraf token already exists
+      set_fact:
+        influx_telegraf_exists: >-
+          {{ 'Telegraf auto-generated' in
+             (influx_auth_list.stdout | from_json | json_query('[].description')) }}
+
+    - name: Determine if Grafana token already exists
+      set_fact:
+        influx_grafana_exists: >-
+          {{ 'Grafana auto-generated' in
+             (influx_auth_list.stdout | from_json | json_query('[].description')) }}
+
+    - name: Create Telegraf token if missing
+      containers.podman.podman_container_exec:
+        name: influxdb
+        command: >
+          influx auth create
+          --description "Telegraf auto-generated"
+          --read-buckets
+          --write-buckets
+          --json
+      register: influx_telegraf_raw
+      when: not influx_telegraf_exists
+
+    - name: Create Grafana token if missing
+      containers.podman.podman_container_exec:
+        name: influxdb
+        command: >
+          influx auth create
+          --description "Grafana auto-generated"
+          --read-buckets
+          --write-buckets
+          --json
+      register: influx_grafana_raw
+      when: not influx_grafana_exists
+
+    - name: Parse newly created token Telegraf
+      set_fact:
+        influx_telegraf_token: "{{ influx_telegraf_raw.stdout | from_json | json_query('token') }}"
+      when: not influx_telegraf_exists
+
+    - name: Load existing token if already present Telegraf
+      set_fact:
+        influx_telegraf_token: >-
+          {{ (influx_auth_list.stdout
+              | from_json
+              | json_query("[?description=='Telegraf auto-generated'].token"))[0] }}
+      when: influx_telegraf_exists
+    
+    - name: Parse newly created token Grafana
+      set_fact:
+        influx_grafana_token: "{{ influx_grafana_raw.stdout | from_json | json_query('token') }}"
+      when: not influx_grafana_exists
+
+    - name: Load existing token if already present Grafana
+      set_fact:
+        influx_grafana_token: >-
+          {{ (influx_auth_list.stdout
+              | from_json
+              | json_query("[?description=='Grafana auto-generated'].token"))[0] }}
+      when: influx_grafana_exists

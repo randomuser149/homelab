@@ -1,0 +1,21 @@
+[agent]
+  interval = "1s"
+  round_interval = true
+
+[[inputs.mqtt_consumer]]
+  servers = ["tcp://mosquitto:{{ mosquitto_port }}"]
+  topics = [
+    "{{ root_topic }}/humidity",
+    "{{ root_topic }}/soil",
+    "{{ root_topic }}/temperature"
+  ]
+  qos = 0
+  connection_timeout = "30"
+  data_format = "value"
+  data_type = "float"
+
+[[outputs.influxdb_v2]]
+  urls = ["http://influxdb:{{ influx_port }}"]
+  token = "{{ influx_telegraf_token }}"
+  organization = "{{ influx_org }}"
+  bucket = "{{ influx_init_bucket }}"

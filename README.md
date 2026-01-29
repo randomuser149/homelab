@@ -1,3 +1,7 @@
+>[!WARNING]
+>This README is NOT up to date, it doesn't reflect the files present in the repo.  
+>I'll update it as soon as I can. Sorry for the inconvinience.  
+
 # Homelab Configuration Overview
 This self-hosted stack is built for privacy, modularity, and remote access, powered by Podman Compose and different ways of access (currently only Cloudflare Tunnel) with Caddy handling reverse proxies where necessary.  
 

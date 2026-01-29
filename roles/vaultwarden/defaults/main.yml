@@ -1,0 +1,9 @@
+vaultwarden_image: docker.io/vaultwarden/server:latest
+podman_network: my-network
+uid: 65534 
+guid: 65534
+dir_permissions: 0700
+signups_allowed: false
+signups_verify: true
+vaultwarden_dir: vaultwarden-data
+vaultwarden_port: 1111

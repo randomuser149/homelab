@@ -1,0 +1,5 @@
+influx_image: docker.io/library/influxdb:latest
+influx_port: 8086
+influx_dir: influx_data
+influx_dir_permissions: 0700
+influx_admin_user: admin

@@ -1,0 +1,4 @@
+caddyfile_permissions: 0644
+caddy_container_permissions: 0644
+caddy_health_port: 8080
+caddy_image: ghcr.io/caddybuilds/caddy-cloudflare:latest

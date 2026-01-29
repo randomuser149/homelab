@@ -1,0 +1,22 @@
+    - name: Render Caddyfile with domains
+      template:
+        src: Caddyfile_{{ env }}.j2
+        dest: /{{ parent_dir }}/Caddyfile
+        mode: "{{ caddyfile_permissions }}"
+
+    - name: Ensure caddy_data volume exists
+      containers.podman.podman_volume:
+        name: caddy_data
+        state: present
+
+    - name: Deploy Caddy Quadlet
+      ansible.builtin.template:
+        src: caddy.container.j2
+        dest: /etc/containers/systemd/caddy.container
+        mode: '{{ caddy_container_permissions }}'
+      
+    - name: Restart Caddy
+      ansible.builtin.systemd:
+        name: caddy.service
+        state: restarted
+        daemon_reload: true

@@ -1,0 +1,30 @@
+    - name: Render telegraf.conf
+      template:
+        src: "{{ telegraf_conf }}.j2"
+        dest: /{{ parent_dir }}/{{ telegraf_conf }}
+        mode: "{{ telegraf_file_permissions }}"
+
+    - name: Wait for Mosquitto port
+      wait_for:
+        host: 127.0.0.1
+        port: "{{ mosquitto_port }}"
+        delay: 2
+        timeout: 30
+
+    - name: Run Telegraf container
+      containers.podman.podman_container:
+        name: telegraf
+        image: "{{ telegraf_image }}"
+        state: started
+        restart_policy: unless-stopped
+    
+        user: "0"        # root
+        init: false
+    
+        entrypoint: "/usr/bin/telegraf"
+    
+        volumes:
+          - "/{{ parent_dir }}/{{ telegraf_conf }}:/etc/telegraf/telegraf.conf:Z,ro"
+    
+        network:
+          - "{{ podman_network }}"

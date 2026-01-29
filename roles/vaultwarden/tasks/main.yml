@@ -1,0 +1,60 @@
+    # Vaultwarden
+    - name: Create vaultwarden-data directory
+      file:
+        path: /{{ parent_dir }}/{{ vaultwarden_dir }}
+        state: directory
+        owner: "{{ uid }}"
+        group: "{{ guid }}"
+        mode: "{{ dir_permissions }}"
+
+    - name: Run Vaultwarden container
+      containers.podman.podman_container:
+        name: vaultwarden
+        image: "{{ vaultwarden_image }}"
+        state: started
+        restart_policy: unless-stopped
+    
+        user: "{{ uid }}:{{ guid }}"
+
+        volumes:
+          - "/{{ parent_dir }}/{{ vaultwarden_dir }}:/data:Z"
+    
+        env:
+          ROCKET_PORT: "{{ vaultwarden_port }}"
+          ROCKET_ADDRESS: "0.0.0.0"
+          SIGNUPS_VERIFY: "{{ signups_verify }}"
+
+        network:
+          - "{{ podman_network }}"
+      when: vaultwarden_bootstrap and not signups_allowed
+
+    - name: Wait for you to create your account
+      pause:
+        prompt: "Create your Vaultwarden account now, then press Enter"
+      when: vaultwarden_bootstrap and not signups_allowed
+
+    - set_fact:
+        vaultwarden_bootstrap: false
+      when: vaultwarden_bootstrap
+
+    - name: Run Vaultwarden container
+      containers.podman.podman_container:
+        name: vaultwarden
+        image: "{{ vaultwarden_image }}"
+        state: started
+        restart_policy: unless-stopped
+
+        user: "{{ uid }}:{{ guid }}"
+
+        volumes:
+          - "/{{ parent_dir }}/{{ vaultwarden_dir }}:/data:Z"
+
+        env:
+          ROCKET_PORT: "{{ vaultwarden_port }}"
+          ROCKET_ADDRESS: "0.0.0.0"
+          SIGNUPS_ALLOWED: "{{ signups_allowed }}"
+          SIGNUPS_VERIFY: "{{ signups_verify }}"
+
+        network:
+          - "{{ podman_network }}"
+      when: not vaultwarden_bootstrap

@@ -1,0 +1,4 @@
+mosquitto_image: docker.io/eclipse-mosquitto:latest
+mosquitto_port: 1883
+mosquitto_conf: mosquitto.conf
+mosquitto_file_permissions: 0644

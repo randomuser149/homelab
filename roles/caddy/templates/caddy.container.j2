@@ -1,0 +1,31 @@
+[Unit]
+Description=Caddy reverse proxy with Cloudflare DNS
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image={{ caddy_image }}
+PublishPort=80:80
+PublishPort=443:443
+PublishPort=443:443/udp
+PublishPort={{ caddy_health_port }}:{{ caddy_health_port }}
+Volume=/{{ parent_dir }}/Caddyfile:/etc/caddy/Caddyfile:Z,ro
+Volume=caddy_data:/data:Z
+Volume=caddy_config:/config:Z
+Environment=CLOUDFLARE_API_TOKEN={{ cloudflare_api_token }}
+Network={{ podman_network }}
+
+AddCapability=NET_ADMIN
+
+[Service]
+HealthCmd=curl -f http://localhost:{{ caddy_health_port }}/health || exit 1
+HealthInterval=30s
+HealthTimeout=3s
+HealthStartPeriod=10s
+HealthRetries=3
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
