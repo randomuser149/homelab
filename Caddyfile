@@ -1,0 +1,15 @@
+{
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+vaultwarden.example.tld {
+	reverse_proxy vaultwarden:1111
+}
+
+grafana.example.tld {
+	reverse_proxy grafana:3000
+}
+
+influx.example.tld {
+	reverse_proxy influxdb:8086
+}

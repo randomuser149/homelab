@@ -42,7 +42,6 @@ ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass
 | Branch       | Description                                                     |
 |--------------|-----------------------------------------------------------------|
 | main         | Current configurations (Cloudflare Tunnel, Podman containers, Quadlets, IoT monitoring) |
-| cloudflared  | Older Podman Compose stack behind Cloudflare Tunnel             |
 | tailscale    | Older Docker Compose stack behind Tailscale                     |
 | cloud        | Very simple Google Cloud config                                 |
 | esp32        | ESP project files                                               |
@@ -50,7 +49,7 @@ ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass
 
 ## Requirements
 - Ansible installed on your controller
-- A system Ansible will configure
+- A system Ansible will configure (with SELinux support, or you need to manually change some labels)
 - A domain you own
 - A Cloudflare account
 - ESP32 + Arduino IDE (if using sensors)
