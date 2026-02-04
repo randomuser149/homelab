@@ -1,0 +1,53 @@
+esphome:
+  name: sht41-c3
+  friendly_name: SHT41 ESP32-C3
+
+esp32:
+  board: nologo_esp32c3_super_mini
+  framework:
+    type: esp-idf
+
+logger:
+
+#api:
+#  encryption:
+#    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+    password: ""
+
+wifi:
+  ssid: "ssid"
+  password: "pass"
+
+  ap:
+    ssid: "SHT41-C3 Fallback"
+    password: "esp32c3test"
+
+captive_portal:
+
+
+mqtt:
+  broker: server_lan_ip
+  port: 1883
+  topic_prefix: sensors
+  client_id: sht41-c3
+
+i2c:
+  sda: 2
+  scl: 3
+  scan: true
+
+sensor:
+  - platform: sht4x
+    temperature:
+      name: "temperature"
+      id: sht41_temp
+      state_topic: sensors/sht41/temperature
+    humidity:
+      name: "humidity"
+      id: sht41_hum
+      state_topic: sensors/sht41/humidity
+    address: 0x44
+    update_interval: 2s
