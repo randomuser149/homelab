@@ -1,616 +1,392 @@
 {
   "dashboard": {
-    "annotations": {
-      "list": [
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 0,
+      "links": [],
+      "panels": [
         {
-          "builtIn": 1,
           "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
+            "type": "influxdb",
+            "uid": "influx-main"
           },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "type": "dashboard"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 3,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/humidity\")\r\n  |> filter(fn: (r) => r._value >= 30)\r\n\r\n",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "hide": false,
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/humidity\")\r\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\r\n  |> filter(fn: (r) => r._value >= 30)\r\n\r\n",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "hide": false,
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -72h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/humidity\")\r\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\r\n  |> filter(fn: (r) => r._value >= 30)\r\n\r\n",
+              "refId": "C"
+            }
+          ],
+          "title": "Humidity",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influx-main"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/temperature\")\r\n  |> filter(fn: (r) => r._value >= 15)\r\n",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "hide": false,
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/temperature\")\r\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\r\n  |> filter(fn: (r) => r._value >= 15)\r\n",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "hide": false,
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -72h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/temperature\")\r\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\r\n  |> filter(fn: (r) => r._value >= 15)\r\n",
+              "refId": "C"
+            }
+          ],
+          "title": "Temperature",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influx-main"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "id": 6,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/soil\")\r\n",
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "hide": false,
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/soil\")\r\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\r\n",
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "hide": false,
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -72h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/soil\")\r\n  |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)\r\n",
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "influx-main"
+              },
+              "hide": false,
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -120h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/soil\")\r\n  |> aggregateWindow(every: 60m, fn: mean, createEmpty: false)\r\n",
+              "refId": "D"
+            }
+          ],
+          "title": "Soil Average",
+          "type": "timeseries"
         }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 0,
-    "links": [],
-    "panels": [
-      {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "influx-main"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "showValues": false,
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 0
-        },
-        "id": 5,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "12.3.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "influxdb",
-              "uid": "influx-main"
-            },
-            "query": "from(bucket: \"sensors\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/soil\")",
-            "refId": "A"
-          }
-        ],
-        "title": "Soil",
-        "type": "timeseries"
+      ],
+      "preload": false,
+      "schemaVersion": 42,
+      "tags": [],
+      "templating": {
+        "list": []
       },
-      {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "influx-main"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "showValues": false,
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 0
-        },
-        "id": 6,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "12.3.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "influxdb",
-              "uid": "influx-main"
-            },
-            "query": "from(bucket: \"sensors\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/soil\")\r\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\r\n",
-            "refId": "A"
-          }
-        ],
-        "title": "Soil Average",
-        "type": "timeseries"
+      "time": {
+        "from": "now-2d",
+        "to": "now"
       },
-      {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "influx-main"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "showValues": false,
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 8
-        },
-        "id": 1,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "12.3.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "influxdb",
-              "uid": "influx-main"
-            },
-            "query": "from(bucket: \"sensors\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/humidity\")",
-            "refId": "A"
-          }
-        ],
-        "title": "Humidity",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "influx-main"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "showValues": false,
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 8
-        },
-        "id": 3,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "12.3.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "influxdb",
-              "uid": "influx-main"
-            },
-            "query": "from(bucket: \"sensors\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/humidity\")\r\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\r\n",
-            "refId": "A"
-          }
-        ],
-        "title": "Humidity Average",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "influx-main"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "showValues": false,
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 0,
-          "y": 16
-        },
-        "id": 2,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "12.3.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "influxdb",
-              "uid": "influx-main"
-            },
-            "query": "from(bucket: \"sensors\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/temperature\")",
-            "refId": "A"
-          }
-        ],
-        "title": "Temperature",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "influx-main"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "showValues": false,
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 16
-        },
-        "id": 4,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "12.3.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "influxdb",
-              "uid": "influx-main"
-            },
-            "query": "from(bucket: \"sensors\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\r\n  |> filter(fn: (r) => r.topic == \"sensors/temperature\")\r\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\r\n",
-            "refId": "A"
-          }
-        ],
-        "title": "Temperature Average",
-        "type": "timeseries"
-      }
-    ],
-    "preload": false,
-    "schemaVersion": 42,
-    "tags": [],
-    "templating": {
-      "list": []
-    },
-    "time": {
-      "from": "now-24h",
-      "to": "now"
-    },
-    "timepicker": {},
-    "timezone": "browser",
-    "title": "Sensor Data",
-    "uid": "adq8mgl",
-    "version": 19
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "Sensor Data",
+      "uid": "adq8mgl",
+      "version": 22
   },
   "folderId": 0,
   "overwrite": true
 }
-
-
