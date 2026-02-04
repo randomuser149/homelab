@@ -37,14 +37,13 @@ ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass
 
 ## Branches
 >[!IMPORTANT]
->These branches are just for now, tailscale and cloudflared will be merged back to main, as soon as I add the documentations from those branches to the Zensical site.
+>These branches are just for now, tailscale will be merged back to main, as soon as I add the documentations from the branch to the Zensical site.
 
 | Branch       | Description                                                     |
 |--------------|-----------------------------------------------------------------|
 | main         | Current configurations (Cloudflare Tunnel, Podman containers, Quadlets, IoT monitoring) |
 | tailscale    | Older Docker Compose stack behind Tailscale                     |
 | cloud        | Very simple Google Cloud config                                 |
-| esp32        | ESP project files                                               |
 | gh-pages     | Built documentation page                                        |
 
 ## Requirements
