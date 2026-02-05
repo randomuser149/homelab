@@ -11,20 +11,14 @@
         delay: 2
         timeout: 30
 
-    - name: Run Telegraf container
-      containers.podman.podman_container:
-        name: telegraf
-        image: "{{ telegraf_image }}"
+    - name: Deploy Telegraf Quadlet
+      ansible.builtin.template:
+        src: telegraf.container.j2
+        dest: /etc/containers/systemd/telegraf.container
+        mode: '{{ telegraf_container_permissions }}'
+
+    - name: Start Telegraf
+      ansible.builtin.systemd:
+        name: telegraf.service
         state: started
-        restart_policy: unless-stopped
-    
-        user: "0"        # root
-        init: false
-    
-        entrypoint: "/usr/bin/telegraf"
-    
-        volumes:
-          - "/{{ parent_dir }}/{{ telegraf_conf }}:/etc/telegraf/telegraf.conf:Z,ro"
-    
-        network:
-          - "{{ podman_network }}"
+        daemon_reload: true

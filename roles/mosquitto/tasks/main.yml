@@ -11,18 +11,15 @@
         permanent: yes
         state: enabled
         immediate: yes
-    - name: Run Mosquitto container
-      containers.podman.podman_container:
-        name: mosquitto
-        image: "{{ mosquitto_image }}"
+
+    - name: Deploy Mosquitto Quadlet
+      ansible.builtin.template:
+        src: mosquitto.container.j2
+        dest: /etc/containers/systemd/mosquitto.container
+        mode: '{{ mosquitto_container_permissions }}'
+
+    - name: Start Mosquitto
+      ansible.builtin.systemd:
+        name: mosquitto.service
         state: started
-        restart_policy: unless-stopped
-
-        publish:
-          - "{{ mosquitto_port }}:{{ mosquitto_port }}"
-
-        volumes:
-          - "/{{ parent_dir }}/{{ mosquitto_conf }}:/mosquitto/config/mosquitto.conf:Z"
-
-        network:
-          - "{{ podman_network }}"
+        daemon_reload: true

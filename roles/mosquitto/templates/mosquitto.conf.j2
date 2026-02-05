@@ -1,0 +1,20 @@
+[Unit]
+Description=Mosquitto - MQTT Broker
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image={{ mosquitto_image }}
+
+PublishPort={{ mosquitto_port }}:{{ mosquitto_port }}
+
+Volume=/{{ parent_dir }}/{{ mosquitto_conf }}:/mosquitto/config/mosquitto.conf:Z,ro
+
+Network={{ podman_network }}
+
+[Service]
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=Telegraf
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image={{ telegraf_image }}
+User=0
+Entrypoint=/usr/bin/telegraf
+
+Volume=/{{ parent_dir }}/{{ telegraf_conf }}:/etc/telegraf/telegraf.conf:Z,ro
+
+Network={{ podman_network }}
+
+[Service]
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -3,11 +3,11 @@
   round_interval = true
 
 [[inputs.mqtt_consumer]]
-  servers = ["tcp://mosquitto:{{ mosquitto_port }}"]
+  servers = ["tcp://systemd-mosquitto:{{ mosquitto_port }}"]
   topics = [
     "{{ root_topic }}/humidity",
     "{{ root_topic }}/soil",
-    "{{ root_topic }}/temperature"
+    "{{ root_topic }}/temperature",
     "{{ root_topic }}/sht41/humidity",
     "{{ root_topic }}/sht41/temperature"
   ]
