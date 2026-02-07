@@ -12,6 +12,18 @@ The less that is manual and the more rebuildable the better.
 
 Full documentation available at: [https://randomuser149.github.io/homelab/](https://randomuser149.github.io/homelab/)
 
+## Services
+This stack contains a variety of services from IoT to kitches stuff.
+| Service | Description | Added/Modified | Notes |
+|-|-|-|-|
+| Caddy | Reverse Proxy | 07/02/2026 | Needs more limitations on domain paths |
+| Vaultwarden | Password manager | ?? | Needs automatic backups before can be trusted |
+| Tandoor | Recipe manager & shopping list | 07/02/2026 | Needs automatic backups & additional `header_up`s in Caddy |
+| Grafana | Dashboards | ?? | |
+| InfluxDB | Database for IoT data | ?? | Needs automatic backups |
+| Telegraf | Middleman between MQTT and DB | ?? | |
+| Mosquitto | Gathers data from IoT | ?? | |
+
 ## Usage
 ```
 git clone https://github.com/randomuser149/homelab.git

@@ -1,0 +1,36 @@
+    - name: Create Tandoor parent dir
+      file:
+        path: /{{ parent_dir }}/{{ tandoor_dir }}
+        state: directory
+
+    - name: Create Tandoor subdirs
+      file:
+        path: /{{ parent_dir }}/{{ tandoor_dir }}/{{ item }}
+        state: directory
+      loop:
+        - "{{ tandoor_db_dir }}"
+        - "{{ tandoor_media_dir }}"
+
+    - name: Render Tandoor env file
+      template:
+        src: .env.j2
+        dest: /{{ parent_dir }}/{{ tandoor_dir }}/.env
+
+    - name: Deploy Tandoor Database Quadlet
+      ansible.builtin.template:
+        src: tandoor-db.container.j2
+        dest: /etc/containers/systemd/tandoor-db.container
+
+    - name: Deploy Tandoor Web Quadlet
+      ansible.builtin.template:
+        src: tandoor-web.container.j2
+        dest: /etc/containers/systemd/tandoor-web.container
+
+    - name: Start Tandoor Quadlets
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        daemon_reload: true
+      loop:
+        - tandoor-db.service
+        - tandoor-web.service

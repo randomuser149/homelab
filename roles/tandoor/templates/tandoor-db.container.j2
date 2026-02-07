@@ -1,0 +1,22 @@
+[Unit]
+Description=Tandoor Recipes Database
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image={{ tandoor_db_image }}
+ContainerName=db_recipes
+EnvironmentFile=/{{ parent_dir }}/{{ tandoor_dir }}/.env
+Network={{ podman_network }}
+
+Volume=/{{ parent_dir }}/{{ tandoor_dir }}/{{ tandoor_db_dir }}:/var/lib/postgresql/data:Z
+
+AutoUpdate=registry
+
+[Service]
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+

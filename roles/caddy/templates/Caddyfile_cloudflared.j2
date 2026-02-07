@@ -33,3 +33,13 @@ http://{{ server_ip }}, http://{{ server_tailscale_ip}} {
                 body "OK"
         }
 }
+
+
+{{ tandoor_domain }} {
+	encode zstd gzip
+	
+	reverse_proxy web_recipes:80 {
+		header_up Host {{ tandoor_domain }}
+	    header_up X-Forwarded-For {remote_host}
+	}
+}

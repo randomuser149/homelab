@@ -87,6 +87,10 @@
       import_role:
         name: vaultwarden
 
+    - name: Run Tandoor role
+      import_role:
+        name: tandoor
+
     - name: Run Mosquitto role
       import_role:
         name: mosquitto

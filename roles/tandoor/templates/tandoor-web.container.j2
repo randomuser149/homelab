@@ -1,0 +1,23 @@
+[Unit]
+Description=Tandoor Recipes Web
+Wants=db_recipes.service
+After=db_recipes.service
+
+[Container]
+Image={{ tandoor_web_image }}
+ContainerName=web_recipes
+EnvironmentFile=/{{ parent_dir }}/{{ tandoor_dir }}/.env
+Network=my-network
+
+Volume=staticfiles:/opt/recipes/staticfiles
+Volume=/{{ parent_dir }}/{{ tandoor_dir }}/{{ tandoor_media_dir }}:/opt/recipes/mediafiles:Z
+
+AutoUpdate=registry
+
+[Service]
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+

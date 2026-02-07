@@ -1,0 +1,8 @@
+tandoor_db_image: docker.io/library/postgres:16-alpine
+tandoor_web_image: docker.io/vabene1111/recipes:latest
+
+tandoor_dir: tandoor
+tandoor_db_dir: postgresql
+tandoor_media_dir: mediafiles
+
+tandoor_tz: Europe/Berlin
