@@ -6,17 +6,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A new project generated from the default template project.">
+        <meta name="description" content="The detailed documentation of my almost fully automated homelab">
       
       
-        <meta name="author" content="<your name here>">
+        <meta name="author" content="randomuser149">
       
+      
+        <link rel="canonical" href="https://randomuser149.github.io/homelab/roles/vaultwarden/">
       
       
         <link rel="prev" href="../caddy/">
       
       
-        <link rel="next" href="../grafana/">
+        <link rel="next" href="../tandoor/">
       
       
         
@@ -27,7 +29,7 @@
     
     
       
-        <title>Vaultwarden - Documentation</title>
+        <title>Vaultwarden - Homelab docs</title>
       
     
     
@@ -99,7 +101,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Documentation" class="md-header__button md-logo" aria-label="Documentation" data-md-component="logo">
+    <a href="../.." title="Homelab docs" class="md-header__button md-logo" aria-label="Homelab docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -113,7 +115,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Documentation
+            Homelab docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -198,13 +200,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Documentation" class="md-nav__button md-logo" aria-label="Documentation" data-md-component="logo">
+    <a href="../.." title="Homelab docs" class="md-nav__button md-logo" aria-label="Homelab docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
 
     </a>
-    Documentation
+    Homelab docs
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -888,6 +890,8 @@
       
         
       
+        
+      
     
     
     
@@ -946,6 +950,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vaultwarden
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -963,6 +985,220 @@
 
       </a>
       
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reverse-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reverse Proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quadlet-or-rather-podman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quadlet (or rather Podman)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-boot-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First boot behaviour
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customizations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backups
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restoring-the-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restoring the backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replace-your-old-directorys-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replace your old directory's data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bugs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bugs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tandoor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tandoor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1297,6 +1533,180 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reverse-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reverse Proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quadlet-or-rather-podman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quadlet (or rather Podman)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-boot-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First boot behaviour
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customizations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backups
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating the backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restoring-the-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restoring the backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replace-your-old-directorys-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replace your old directory's data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bugs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bugs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1385,6 +1795,190 @@
                   
 
 <h1 id="vaultwarden">Vaultwarden<a class="headerlink" href="#vaultwarden" title="Permanent link">&para;</a></h1>
+<div class="admonition tip">
+<p class="admonition-title">This is NOT a Quadlet yet. However, it's installation is handled by Ansible, it works, it's a container, so it's just a bit of a structural issue on my end.</p>
+</div>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<div class="admonition abstract">
+<p class="admonition-title">Official docs can be found <a href="https://github.com/dani-garcia/vaultwarden?tab=readme-ov-file">here</a>.</p>
+</div>
+<p>As the docs say Vaultwarden is "An alternative server implementation of the Bitwarden Client API, written in Rust and compatible with official Bitwarden clients [...], perfect for self-hosted deployment where running the official resource-heavy service might not be ideal."<br />
+It stores passwords and it is compatible with Bitwarden clients. Thats it. </p>
+<h2 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">&para;</a></h2>
+<h3 id="reverse-proxy">Reverse Proxy<a class="headerlink" href="#reverse-proxy" title="Permanent link">&para;</a></h3>
+<p>The reverse proxy (Caddy) handles TLS and domain management.<br />
+The Vaultwarden container listens on port <code>80</code> by default, but I changed it to port <code>1111</code> by default, which is customizable.<br />
+The domain it uses must be changed in <code>vars.yml</code>. See <a href=".././caddy#configuration">Caddy documentation</a>.</p>
+<h3 id="quadlet-or-rather-podman">Quadlet (or rather Podman)<a class="headerlink" href="#quadlet-or-rather-podman" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">This is NOT a Quadlet yet. It's <em>just</em> a regular Podman container. migration will happen as soon as I have time for it. So treat this as a "Podman" section</p>
+</div>
+<p>It's Ansible who creates the container so here are the snippets from <code>roles/vaultwarden/tasks/main.yml</code>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>    - name: Run Vaultwarden container
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      containers.podman.podman_container:
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        name: vaultwarden
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        image: &quot;{{ vaultwarden_image }}&quot;
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        state: started
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        restart_policy: unless-stopped
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        user: &quot;{{ uid }}:{{ guid }}&quot;
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        volumes:
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>          - &quot;/{{ parent_dir }}/{{ vaultwarden_dir }}:/data:Z&quot;
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        env:
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>          ROCKET_PORT: &quot;{{ vaultwarden_port }}&quot;
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>          ROCKET_ADDRESS: &quot;0.0.0.0&quot;
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>          SIGNUPS_VERIFY: &quot;{{ signups_verify }}&quot;
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        network:
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>          - &quot;{{ podman_network }}&quot;
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>      when: vaultwarden_bootstrap and not signups_allowed
+</span></code></pre></div>
+and
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>    - name: Run Vaultwarden container
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>      containers.podman.podman_container:
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        name: vaultwarden
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        image: &quot;{{ vaultwarden_image }}&quot;
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        state: started
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        restart_policy: unless-stopped
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        user: &quot;{{ uid }}:{{ guid }}&quot;
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        volumes:
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>          - &quot;/{{ parent_dir }}/{{ vaultwarden_dir }}:/data:Z&quot;
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        env:
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>          ROCKET_PORT: &quot;{{ vaultwarden_port }}&quot;
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>          ROCKET_ADDRESS: &quot;0.0.0.0&quot;
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>          SIGNUPS_ALLOWED: &quot;{{ signups_allowed }}&quot;
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>          SIGNUPS_VERIFY: &quot;{{ signups_verify }}&quot;
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        network:
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>          - &quot;{{ podman_network }}&quot;
+</span></code></pre></div></p>
+<h3 id="first-boot-behaviour">First boot behaviour<a class="headerlink" href="#first-boot-behaviour" title="Permanent link">&para;</a></h3>
+<p>But wait.. there's two containers? Not quite.<br />
+You see Vaultwarden allows you to forbid new signups with an <code>env</code> variable.<br />
+And since it's exposed over Cloudflare Tunnel, theoretically anyone with the domain could make an account.<br />
+To prevent that, on the first run (or when you change <code>vaultwarden_bootsrap</code> variable in <code>roles/vaultwarden/vars/main.yml</code>) it allows signups, then after you made your account (and with pressing <code>Enter</code> signalled to Ansible you are done), it recreates the container but now forbids account creation:<br />
+<img alt="Account creation error" src=".././../images/vw1.png" />  </p>
+<div class="admonition note">
+<p class="admonition-title">After your first run, don't forget to set <code>vaultwarden_bootstrap</code> to false, or else it'll stop and wait for your <code>Enter</code> every singe time</p>
+<div class="admonition tip">
+<p class="admonition-title">Automation</p>
+<p>There might be a way to set it to <code>false</code> automatically, will look into that</p>
+</div>
+</div>
+<h3 id="required-variables">Required variables<a class="headerlink" href="#required-variables" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Set <code>vaultwarden_domain</code> variable in global <code>vars.yml</code> file.</li>
+<li><code>vaultwarden_bootstrap</code> set to <code>true</code> in <code>roles/vaultwarden/vars/main.yml</code> on your first run. (After, manually set it to false)</li>
+<li><code>podman_network</code> variable filled in global <code>vars.yml</code> file.</li>
+<li><code>vaultwarden_port</code> variable filled in global <code>vars.yml</code> file. (I tested <code>1111</code>, that is confirmed to work).</li>
+</ol>
+<h3 id="directory-layout">Directory layout<a class="headerlink" href="#directory-layout" title="Permanent link">&para;</a></h3>
+<p>If you leave the defaults, the directory layout will look like this:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/stack/
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  vaultwarden-data/
+</span></code></pre></div>
+Variable mapping:<br />
+<code>/stack</code> is <code>parent_dir</code><br />
+<code>vaultwarden-data/</code> is <code>vaultwarden_dir</code></p>
+<h3 id="customizations">Customizations<a class="headerlink" href="#customizations" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Only change the <code>roles/vaultwarden/defaults/main.yml</code>, <code>roles/vaultwarden/vars/main.yml</code> and <code>vars.yml</code>. Do NOT mess around in the <code>.j2</code> files unless you know exactly what you are doing.</p>
+<div class="admonition note">
+<p class="admonition-title">There are actually no <code>.j2</code> files yet, but do NOT mess with the <code>tasks/main.yml</code> either.</p>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Make sure your directory vars do NOT start or end with a <code>/</code></p>
+</div>
+<ol>
+<li>You can change where they store the data by editing <code>roles/vaultwarden/defaults/main.yml</code> and/or by changing the parent directory in <code>vars.yml</code>.  </li>
+<li>To change whether you can sign up after first install or you must verify your e-mail, change <code>signups_allowed</code> and <code>signups_verify</code> in <code>roles/vaultwarden/defaults/main.yml</code> (see in table).  </li>
+<li>To change its port, change <code>vaultwarden_port</code> in <code>vars.yml</code>.</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Container name</p>
+<p>You <em>can</em> change the container names, but be careful as container names aren't dynamic so other containers might break.</p>
+</div>
+<p><code>roles/vaultwarden/defaults/main.yml</code></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vaultwarden_image</code></td>
+<td><code>docker.io/vaultwarden/server:latest</code></td>
+<td>Specify Docker image</td>
+</tr>
+<tr>
+<td><code>uid</code></td>
+<td>65534</td>
+<td>Run container as unprivileged user</td>
+</tr>
+<tr>
+<td><code>guid</code></td>
+<td>65534</td>
+<td>Run container as unprivileged user</td>
+</tr>
+<tr>
+<td><code>dir_permissions</code></td>
+<td>0700</td>
+<td>Set permissions of data directory</td>
+</tr>
+<tr>
+<td><code>signups_allowed</code></td>
+<td><code>false</code></td>
+<td>Controlling signups</td>
+</tr>
+<tr>
+<td><code>signups_verify</code></td>
+<td><code>true</code></td>
+<td>Controlling e-mail verification</td>
+</tr>
+<tr>
+<td><code>vaultwarden_dir</code></td>
+<td><code>vaultwarden-data</code></td>
+<td>Specify data directory name</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">I'm not sure <code>signups_verify</code> works or even exists, will look into that</p>
+</div>
+<h3 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h3>
+<p>It really does not have many dependencies, as Ansible handles them anyways. The only thing you have to do is following the <a href="#required-variables">Required variables</a> section.    </p>
+<h2 id="backups">Backups<a class="headerlink" href="#backups" title="Permanent link">&para;</a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>They might not be the correct commands as I've hastily pulled these from the older README.<br />
+These backups are manual! Not automated. You must run these commands on the server itself.<br />
+Use with caution as it erases your current data so only use it when your data is already gone.  </p>
+</div>
+<h4 id="creating-the-backup">Creating the backup<a class="headerlink" href="#creating-the-backup" title="Permanent link">&para;</a></h4>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>rsync -a --no-xattrs /&lt;parent_dir&gt;/&lt;vaultwarden_dir&gt;/ /tmp/vaultwarden-data-bak &amp;&amp; 7z a -p&quot;password&quot; vaultwarden-backup.7z /tmp/vaultwarden-data-bak &amp;&amp; rm -rf /tmp/vaultwarden-data-bak
+</span></code></pre></div>
+Restoring the backup:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These commands erase your old directory's data, so only use it if that is unsaveable. Or just use the extract part if you want to.</p>
+</div>
+<h4 id="restoring-the-backup">Restoring the backup<a class="headerlink" href="#restoring-the-backup" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>7z x vaultwarden-backup.7z -ppassword -o/&lt;parent_dir&gt;/vaultwarden-restore
+</span></code></pre></div>
+<h4 id="replace-your-old-directorys-data">Replace your old directory's data<a class="headerlink" href="#replace-your-old-directorys-data" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cp -R /&lt;parent_dir&gt;/vaultwarden-restore /&lt;parent_dir&gt;/&lt;vaultwarden_dir&gt; &amp;&amp; rm -rf /&lt;parent_dir&gt;/vaultwarden-restore &amp;&amp; chown -R nobody:nobody /&lt;stack&gt;/&lt;vaultwarden_dir&gt;
+</span></code></pre></div>
+<h2 id="bugs">Bugs<a class="headerlink" href="#bugs" title="Permanent link">&para;</a></h2>
+<p>None as far as I know</p>
 
 
 
@@ -1441,13 +2035,13 @@
         
         
           
-          <a href="../grafana/" class="md-footer__link md-footer__link--next" aria-label="Next: Grafana">
+          <a href="../tandoor/" class="md-footer__link md-footer__link--next" aria-label="Next: Tandoor">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Grafana
+                Tandoor
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1464,7 +2058,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2026 The authors
+      Copyright &copy; 2026 randomuser149
 
     </div>
   
