@@ -12,7 +12,7 @@ License: GNU AFFERO GENERAL PUBLIC LICENSE v3
 
 Licensor: https://github.com/randomuser149
 
-```
+``` 
                     GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 ```
