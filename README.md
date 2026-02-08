@@ -49,7 +49,7 @@ ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass
 
 ## Branches
 >[!IMPORTANT]
->These branches are just for now, tailscale will be merged back to main, as soon as I add the documentations from the branch to the Zensical site.
+>These branches are just for now, tailscale will be merged back to main, as soon as I create feature parity and add the documentations to the Zensical site.
 
 | Branch       | Description                                                     |
 |--------------|-----------------------------------------------------------------|

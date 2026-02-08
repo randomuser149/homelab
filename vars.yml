@@ -14,6 +14,6 @@ influx_retention: 30d
 
 grafana_domain: sub3.example.tld
 
-mosquitto_port: 1883
+tandoor_domain: sub4.example.ltd
 
 podman_network: my-network
