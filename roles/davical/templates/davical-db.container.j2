@@ -1,0 +1,21 @@
+[Unit]
+Description=Postgres DB for DaviCAL
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image={{ davical_db_image }}
+ContainerName=davical-db
+Network={{ podman_network }}
+
+Volume=/{{ parent_dir }}/{{ davical_dir }}:/var/lib/postgresql/data:Z
+
+Environment=POSTGRES_PASSWORD=postgres
+Environment=POSTGRES_USER=postgres
+
+[Service]
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

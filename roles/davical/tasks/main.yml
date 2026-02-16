@@ -1,0 +1,25 @@
+    - name: Create DaviCAL dir
+      file:
+        path: /{{ parent_dir }}/{{ davical_dir }}
+        state: directory
+
+    - name: Deploy DaviCAL Quadlet
+      ansible.builtin.template:
+        src: davical.container.j2
+        dest: /etc/containers/systemd/davical.container
+        mode: '{{ davical_container_permissions }}'
+      
+    - name: Deploy DaviCal DB Quadlet
+      ansible.builtin.template:
+        src: davical-db.container.j2
+        dest: /etc/containers/systemd/davical-db.container
+        mode: '{{ davical_db_container_permissions }}'
+
+    - name: Start Davical Quadlets
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        daemon_reload: true
+      loop:
+        - davical.service
+        - davical-db.service

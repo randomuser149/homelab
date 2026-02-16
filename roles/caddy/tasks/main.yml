@@ -1,6 +1,6 @@
     - name: Render Caddyfile with domains
       template:
-        src: Caddyfile_{{ env }}.j2
+        src: Caddyfile.j2
         dest: /{{ parent_dir }}/Caddyfile
         mode: "{{ caddyfile_permissions }}"
 

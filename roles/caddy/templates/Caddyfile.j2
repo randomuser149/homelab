@@ -2,15 +2,15 @@
 	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
 }
 
-{{ vaultwarden_domain }} {
+{{ vaultwarden_domain }}.{{ tld }} {
 	reverse_proxy vaultwarden:{{ vaultwarden_port }}
 }
 
-{{ influx_domain }} {
+{{ influx_domain }}.{{ tld }} {
 	reverse_proxy influxdb:{{ influx_port }}
 }
 
-{{ grafana_domain }} {
+{{ grafana_domain }}.{{ tld }} {
 	@public {
 		path /public-dashboards/*
 		path /api/public/dashboards/*
@@ -35,11 +35,19 @@ http://{{ server_ip }}, http://{{ server_tailscale_ip}} {
 }
 
 
-{{ tandoor_domain }} {
+{{ tandoor_domain }}.{{ tld }} {
 	encode zstd gzip
 	
 	reverse_proxy web_recipes:80 {
-		header_up Host {{ tandoor_domain }}
+		header_up Host {{ tandoor_domain }}.{{ tld }}
 	    header_up X-Forwarded-For {remote_host}
 	}
+}
+
+{{ davical_domain }}.{{ tld }} {
+	reverse_proxy davical:80 {
+	    header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-For {remote}
+    }
 }

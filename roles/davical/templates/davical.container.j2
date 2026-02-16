@@ -1,0 +1,28 @@
+[Unit]
+Description=DaviCAL CalDAV & CardDAV server
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image={{ davical_image }}
+ContainerName=davical
+Network={{ podman_network }}
+
+Environment=PGHOST=davical-db
+Environment=PGUSER=postgres
+Environment=PGPASSWORD=postgres
+Environment=PGDATABASE=davical
+Environment=RUN_MIGRATIONS_AT_STARTUP=true
+Environment=ROOT_PGUSER=postgres
+Environment=ROOT_PGPASSWORD=postgres
+Environment=DAVICAL_ADMIN_PASS=admin
+Environment=HOST_NAME={{ davical_domain }}.{{ tld }}
+Environment=AWL_X_FORWARDED_PROTO=https
+Environment=AWL_X_FORWARDED_HOST={{ davical_domain }}.{{ tld }}
+
+[Service]
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

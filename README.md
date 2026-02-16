@@ -13,7 +13,7 @@ The less that is manual and the more rebuildable the better.
 Full documentation available at: [https://randomuser149.github.io/homelab/](https://randomuser149.github.io/homelab/)
 
 ## Services
-This stack contains a variety of services from IoT to kitches stuff.
+This stack contains a variety of services from IoT to kitchen stuff.
 | Service | Description | Added/Modified | Notes |
 |-|-|-|-|
 | Caddy | Reverse Proxy | 07/02/2026 | Needs more limitations on domain paths |
@@ -23,6 +23,7 @@ This stack contains a variety of services from IoT to kitches stuff.
 | InfluxDB | Database for IoT data | ?? | Needs automatic backups |
 | Telegraf | Middleman between MQTT and DB | ?? | |
 | Mosquitto | Gathers data from IoT | ?? | |
+| DaviCAL | CalDAV server | 16/02/2026 | I can't really do backups (will look into alternatives) |
 
 ## Usage
 ```
@@ -35,11 +36,12 @@ ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass
 ```
 
 ## Repo structure  
-| File / Folder     | Description                          |
-|-------------------|--------------------------------------|
+| File / Folder     | Description                           |
+|-------------------|---------------------------------------|
 | deprecated/       | Deprecated files                      |
 | roles/            | Ansible roles                         |
 | README.md         | Project overview                      |
+| LICENCE.md        | Licence                               |
 | inventory.ini     | Inventory file                        |
 | playbook.yml      | Main Ansible playbook                 |
 | requirements.yml  | Ansible collections                   |

@@ -1,0 +1,5 @@
+davical_image: docker.io/fintechstudios/davical
+davical_db_image: docker.io/library/postgres:15-alpine
+davical_dir: davical
+davical_container_permissions: 0644
+davical_db_container_permissions: 0644

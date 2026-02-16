@@ -91,6 +91,10 @@
       import_role:
         name: tandoor
 
+    - name: Run DaviCAL role
+      import_role:
+        name: davical
+
     - name: Run Mosquitto role
       import_role:
         name: mosquitto
